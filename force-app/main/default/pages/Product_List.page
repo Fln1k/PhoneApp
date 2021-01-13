@@ -1,0 +1,36 @@
+<apex:page controller="PageController" lightningStylesheets="true">
+    <apex:slds />
+    <apex:form >
+        <apex:actionFunction name="RedirectToDetailPage"
+                             action="{!showDetailPage}"
+                             reRender="none">
+            <apex:param name="p1" assignto="{!productId}" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="RedirectToOrderPage"
+                             action="{!createOrderPage}"
+                             reRender="none">
+            <apex:param name="p1" assignto="{!productId}" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+    <apex:pageBlock title="Products">
+        <apex:pageBlockTable value="{!products}" var="product">
+            <apex:column headerValue="Image">
+                <apex:image url="{!product.Image_Url__c}" width="200" height="200"/>
+            </apex:column>
+            <apex:column >
+                <apex:outputLink onclick="RedirectToDetailPage('{!product.Id}')">{!product.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Description">
+                <apex:outputText value="{!product.Product_Description__c}" rendered="{!if(len(product.Product_Description__c)<=100, true,false)}"/>
+                <apex:outputText value="{!left(product.Product_Description__c, 100)}... " rendered="{!if(len(product.Product_Description__c)>100, true,false)}"/>
+                <apex:outputLink onclick="RedirectToDetailPage('{!product.Id}')" rendered="{!if(len(product.Product_Description__c)>100, true,false)}">More</apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Cost">
+                <apex:outputText value="{!product.Unit_Price__c}" />
+            </apex:column>
+            <apex:column >
+                <button class='slds-button slds-button--neutral' onclick='RedirectToOrderPage("{!product.Id}")'>Buy</button>
+            </apex:column>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

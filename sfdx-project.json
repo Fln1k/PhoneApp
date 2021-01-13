@@ -1,0 +1,11 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://wise-unicorn-5btgap-dev-ed.my.salesforce.com/",
+  "sourceApiVersion": "50.0"
+}

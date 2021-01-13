@@ -1,0 +1,55 @@
+<apex:page controller="PageController" lightningStylesheets="true">
+    <style>
+        #col1, #col2{
+        	width:40%;display:inline-block;
+        }
+        .title{
+        	font-size: 2vh;
+        }
+        .content{
+        	font-size: 1.5vh;
+        }
+    </style>
+    <apex:form >
+        <apex:actionFunction name="RedirectToProductsList"
+                             action="{!showProductList}"
+                             reRender="none">
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="RedirectToOrderPage"
+                             action="{!createOrderPage}"
+                             reRender="none">
+            <apex:param name="p1" assignto="{!productId}" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+    <apex:slds />
+    <apex:pageBlock >
+        <center>
+            <apex:outputText value="{!product.Name}" style="font-size: 3vh;"/>
+        </center>
+        <br/>
+    </apex:pageBlock>
+    <div>
+        <div id='col1' style='align="right"'>
+            <apex:image url="{!product.Image_Url__c}" width="500" height="500" style="margin-left: 30%;"/>
+        </div>
+        <div id='col2'>
+            <div class='title'>
+                Amount:
+            </div>
+            <apex:outputText value="{!product.Units_Available__c}" styleClass="content" />  
+            <br/> 
+            <div class='title'>
+                Description:
+            </div>  
+            <apex:outputText value="{!product.Product_Description__c}" styleClass="content"/>   
+        </div>
+    </div>
+    <br/>
+    <div>
+        <center>
+            <button class='slds-button slds-button--neutral' style="color:white !important; background:#005aff !important;" onclick='RedirectToProductsList()'>To Shopping</button>
+            <button class='slds-button slds-button--neutral' onclick='RedirectToOrderPage("{!product.Id}")'>Buy</button>
+        </center>
+    </div>
+</apex:page>

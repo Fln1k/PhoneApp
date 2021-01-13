@@ -1,0 +1,161 @@
+<apex:page controller="OrderController" extensions="PageController" docType="html-5.0" lightningStylesheets="true">
+    <style>
+        .col1, .col2 {
+        align-items: center;
+        width:49%;
+        display:inline-block;
+        vertical-align: middle;
+        }
+        .content {
+        font-size: 2vh;
+        margin-left: 30%;
+        }
+        tr.spaceUnder > td {
+        padding-bottom: 1em;
+        }
+        td.rightalign {
+        text-align: right;
+        padding-right: 1vh;
+        }
+    </style>
+    <apex:form >
+        <apex:actionFunction name="createOrder"
+                             action="{!createOrder}"
+                             reRender="msgs">
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="recalculateTotalAmount"
+                             action="{!recalculateTotalAmount}"
+                             rerender="totalAmount">
+            <apex:param name="p1" assignto="{!productCount}" value=""/>
+        </apex:actionFunction>
+    </apex:form> 
+    <apex:slds />
+    <apex:outputPanel >
+        <apex:pageMessages id="msgs"/>
+    </apex:outputPanel>
+    <apex:pageBlock >
+        <div class='col1'>
+            <center>
+                <apex:outputText value="Contact Information" style="font-size: 3vh;"/>
+            </center>
+            <br/>
+        </div>
+        <div class='col2'>
+            <center>
+                <apex:outputText value="Product Information" style="font-size: 3vh;"/>
+            </center>
+            <br/>
+        </div>
+    </apex:pageBlock>
+    <apex:form >
+        <div class='col1'>
+            <div class='content'>
+                <table id='contactInfo'>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            Email
+                        </td>
+                        <td>
+                            <apex:input value="{!userEmail}" id="userEmail"/>
+                        </td>
+                    </tr>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            First Name
+                        </td>
+                        <td>
+                            <apex:input value="{!userFirstName}" id="userFirstName"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class='rightalign'>
+                            Last Name
+                        </td>
+                        <td>
+                            <apex:input value="{!userLastName}" id="userLastName"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class='col2'>
+            <div class='content'>
+                <table>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            Product Name
+                        </td>
+                        <td>
+                            {!product.Name }
+                        </td>
+                    </tr>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            Cost
+                        </td>
+                        <td>
+                            {!product.Unit_Price__c} $
+                        </td>
+                    </tr>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            Unit Count
+                        </td>
+                        <td>
+                            <apex:inputText id="inputTextID" value="{!productCount}" 
+                                            html-onInput="checkIsNumeric('{!$Component.inputTextID}'); recalculateTotalAmount(this.value);"/>
+                        </td>
+                    </tr>
+                    <tr class='spaceUnder'>
+                        <td class='rightalign'>
+                            Total Amount
+                        </td>
+                        <td id='Amount_td'>
+                            <apex:outputpanel id="totalAmount">
+                                <apex:outputText value="{!orderAmount}$"/>
+                            </apex:outputpanel>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <br/>
+        <apex:pageBlock >
+            <center>
+                <apex:commandButton style="color:white !important; background:#0059ff !important;" action="{!returnToPreviousPage}" value="Back"/>
+                <apex:commandButton action="{!createOrder}" value="Buy"/>
+            </center>
+        </apex:pageBlock>
+    </apex:form>
+    <script type="text/javascript">
+    function checkIsNumeric(textId)
+    {
+        
+        var textIdText =  (document.getElementById(textId).value);
+        
+        var ValidChars = "0123456789";
+        var IsNumber = true;
+        var Char;
+        
+        
+        for (i = 0; i < textIdText.length && IsNumber == true; i++)
+        {
+            Char = textIdText.charAt(i);
+            if (ValidChars.indexOf(Char) == -1)
+            {
+                IsNumber = false;
+                
+            }
+        }
+        if (IsNumber == false || document.getElementById(textId).value.slice(0, 1) == "0")
+        {
+            document.getElementById(textId).value = document.getElementById(textId).value.slice(0, -1);
+            alert("Please enter a positive numeric value.");
+            return false;
+        }
+    }
+    
+    
+    </script>
+</apex:page>
