@@ -4,7 +4,8 @@ public class OrderControllerTest{
 	static void setup(){
 		insert ProductFactory.createProducts(200);
 	}
-
+	
+	@isTest
 	static OrderController prepareOrderController(Contact testContact){
 		Product_Table__c product = [SELECT Id, Name, Units_Available__c
 		                           FROM Product_Table__c
